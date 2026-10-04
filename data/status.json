@@ -1,60 +1,66 @@
 {
- "run_utc": "2026-10-04T14:48:23.163478Z",
+ "run_utc": "2026-10-04T17:43:32.170547Z",
  "sources": {
   "fwc-snook": {
    "ok": true,
    "bytes": 195213,
-   "sha256": "bf0d69485b227d1f"
+   "sha256": "11265f4ad91b13f0"
   },
   "fwc-groupers": {
    "ok": true,
    "bytes": 247907,
-   "sha256": "1b86a995b8841d95"
+   "sha256": "d5db62899e712b36"
   },
   "fwc-snappers": {
    "ok": true,
    "bytes": 226705,
-   "sha256": "7d9959f23f556aa8"
+   "sha256": "20ad3535bc824d9f"
   },
   "fwc-shellfish": {
    "ok": true,
    "bytes": 219893,
-   "sha256": "4bf7393fbf978d93"
+   "sha256": "88ca616a7c2fa2e1"
   },
   "fwc-sea-shells": {
    "ok": true,
    "bytes": 162454,
-   "sha256": "c7cea907dfff3203"
+   "sha256": "8e6c2a73a74d52b3"
   },
   "fwc-unregulated": {
    "ok": true,
    "bytes": 166032,
-   "sha256": "4e142c0ebf17a86f"
+   "sha256": "f1d6fbd53ecd6489"
   },
   "fwc-index": {
    "ok": true,
    "bytes": 199805,
-   "sha256": "4c80e36d4ce6b6b8"
+   "sha256": "9f7d28177cc44b07"
   },
   "fdacs-southgulf-status": {
-   "ok": true,
-   "bytes": 64519,
-   "sha256": "5a2349b876771759"
+   "ok": false,
+   "problem": "<urlopen error timed out>"
   },
   "fwc-fish-mgmt-areas": {
-   "ok": true,
+   "ok": false,
    "bytes": 7058,
-   "sha256": "774e3ec49190e10b"
+   "sha256": "774e3ec49190e10b",
+   "problem": "not valid JSON (probably an error page)"
   },
   "gulfcouncil-reeffish-boundary": {
-   "ok": true,
+   "ok": false,
    "bytes": 7058,
-   "sha256": "774e3ec49190e10b"
+   "sha256": "774e3ec49190e10b",
+   "problem": "not valid JSON (probably an error page)"
   },
-  "fdacs-shellfish-areas": {
+  "fdacs-service-list": {
    "ok": true,
-   "bytes": 72990,
-   "sha256": "1c67c52fd21e625e"
+   "bytes": 35417,
+   "sha256": "e5ca2de6c944b84d"
+  },
+  "fdacs-admin-closed": {
+   "ok": true,
+   "bytes": 171972,
+   "sha256": "5f3de2a0da4e8c54"
   }
  }
 }
