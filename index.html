@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What can I keep? San Carlos Bay</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f1ea;--ink:#16302b;--mute:#566b66;--card:#fff;--line:#cfd8d3;--open:#1c6b3a;--closed:#a32a1f;--check:#8a5a00;--warn:#fff3d6;--accent:#0f5c63}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1b19;--ink:#e6efec;--mute:#9bb0aa;--card:#16262a;--line:#2c4247;--open:#6fd08f;--closed:#ff8f82;--check:#f0c060;--warn:#3a2f12;--accent:#7cc7cf}}
+:root[data-theme="dark"]{--bg:#0f1b19;--ink:#e6efec;--mute:#9bb0aa;--card:#16262a;--line:#2c4247;--open:#6fd08f;--closed:#ff8f82;--check:#f0c060;--warn:#3a2f12;--accent:#7cc7cf}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font:700 1.7rem/1.15 Georgia,"Iowan Old Style",serif;margin:8px 0 4px}
+h2{font:700 1.15rem Georgia,serif;margin:0}
+p{margin:6px 0}
+.sub{color:var(--mute);margin-bottom:14px}
+.panel,.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px}
+label{display:block;font-weight:600;margin:10px 0 4px}
+input,select,button{font:inherit;color:inherit;width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+button{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600;cursor:pointer}
+button.alt{background:transparent;color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.warn{background:var(--warn);border:1px solid var(--check);border-radius:8px;padding:10px;margin:8px 0}
+.st{display:inline-block;font-weight:700;padding:2px 10px;border-radius:99px;border:2px solid;font-size:.9rem}
+.OPEN{color:var(--open)}.CLOSED{color:var(--closed)}.CHECK{color:var(--check)}
+.card header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+dl{margin:0;display:grid;grid-template-columns:7.5rem 1fr;gap:4px 10px}
+dt{color:var(--mute);font-weight:600}dd{margin:0}
+.src{font-size:.85rem;margin-top:8px}
+a{color:var(--accent)}
+.foot{color:var(--mute);font-size:.85rem}
+</style></head><body><main>
+<h1>What can I keep?</h1>
+<p class="sub">Prototype for San Carlos Bay (Gulf side, Lee County). Snook, grouper, oysters, mussels.</p>
+
+<div class="panel">
+<label for="date">Date</label><input type="date" id="date">
+<label for="src">Location</label>
+<select id="src"><option value="manual">Choose a place</option><option value="gps">Use my GPS now</option></select>
+<div id="manualBox"><label for="place">Place</label>
+<select id="place"><option value="scb">San Carlos Bay (Lee County, Gulf state waters)</option><option value="other">Somewhere else (not covered yet)</option></select></div>
+<div id="gpsBox" hidden><button class="alt" id="gpsBtn" type="button">Get my location</button><p id="gpsOut" aria-live="polite"></p></div>
+<label for="waters">Waters</label><select id="waters"><option value="state">State waters (inside 9 miles)</option><option value="fed">Federal waters (beyond 9 miles)</option></select>
+<label for="sp">Species</label>
+<select id="sp"><option value="all">All four</option><option value="snook">Snook</option><option value="grouper">Grouper</option><option value="oyster">Oysters</option><option value="mussel">Mussels</option></select>
+<button id="go" type="button" style="margin-top:12px">Show rules</button>
+</div>
+
+<div id="out"></div>
+<p class="foot">Prototype, not legal advice. Rules last checked against FWC pages on 2026-10-04 and can change by executive order. Confirm with FWC before you keep anything. Limits shown are for Gulf state waters (shore to 9 miles).</p>
+</main>
+<script>
+const CHECKED="2026-10-04";
+const SRC={snook:"https://myfwc.com/fishing/saltwater/recreational/snook/",grouper:"https://myfwc.com/fishing/saltwater/recreational/groupers/",shell:"https://myfwc.com/fishing/saltwater/recreational/shellfish/",shells:"https://myfwc.com/fishing/saltwater/recreational/sea-shells/",rule:"https://www.flrules.org/gateway/ChapterHome.asp?Chapter=68B-27",fdacs:"https://shellfish.fdacs.gov/seas/seas_southgulf.htm"};
+const GROUPER_LIC="Saltwater fishing license (unless exempt) and State Reef Fish Survey sign-up (mandatory for grouper)";
+const GROUPER_POSS="Land with head and fins intact. Reef fish gear rules apply. Charter captain and crew: zero bag.";
+const AGG="Aggregate: no more than 4 grouper of all species combined, per person per day.";
+function d(s){const[y,m,dd]=s.split("-").map(Number);return{y,m,d:dd}}
+function snookStatus(t){ // Charlotte Harbor region
+ const open=(t.m===3||t.m===4||t.m===10||t.m===11);
+ return open?["OPEN","Open Mar 1-Apr 30 and Oct 1-Nov 30."]:["CLOSED","Closed Dec 1-end of Feb and May 1-Sept 30."]}
+function gagStatus(t){
+ if(t.y!==2026) return ["CHECK","No verified gag season for this year. Check FWC."];
+ return(t.m===9)?["OPEN","2026 Gulf state-waters gag season is Sept 1-30 only."]:["CLOSED","2026 gag season is Sept 1-30. Closed all other days this year."]}
+const ALWAYS=["OPEN","Open year-round in state waters."];
+function build(t,region){
+ const c=[];
+ if(region.snook){const s=snookStatus(t);c.push({sp:"snook",name:"Snook",st:s[0],why:s[1],rows:[["Size","28 to 33 inches total length (slot)"],["Bag","1 per person per day"],["Possession","Whole until landed ashore. Hook and line only. Charter captain and crew may not keep a bag limit."],["License","Saltwater fishing license (unless exempt) and snook permit"],["Location","Charlotte Harbor snook region"]],src:[["FWC snook page",SRC.snook]]})}
+ if(region.grouper){
+  const g=gagStatus(t);
+  c.push({sp:"grouper",name:"Gag grouper",st:g[0],why:g[1],rows:[["Size","24 inches TL minimum"],["Bag","2 per person per day"],["Aggregate",AGG],["Possession",GROUPER_POSS],["License",GROUPER_LIC],["Tip","Easily confused with black grouper. Size minimum is the same."]],src:[["FWC grouper page",SRC.grouper]]});
+  c.push({sp:"grouper",name:"Black grouper",st:ALWAYS[0],why:ALWAYS[1],rows:[["Size","24 inches TL minimum"],["Bag","Up to 4 per person (within the 4 aggregate)"],["Aggregate",AGG],["Possession",GROUPER_POSS],["License",GROUPER_LIC]],src:[["FWC grouper page",SRC.grouper]]});
+  c.push({sp:"grouper",name:"Red grouper",st:ALWAYS[0],why:ALWAYS[1],rows:[["Size","20 inches TL minimum"],["Bag","2 per person per day (within the 4 aggregate)"],["Possession",GROUPER_POSS],["License",GROUPER_LIC]],src:[["FWC grouper page",SRC.grouper]]});
+  c.push({sp:"grouper",name:"Scamp, yellowfin, yellowmouth",st:ALWAYS[0],why:ALWAYS[1],rows:[["Size","Scamp 16 in. TL. Yellowfin 20 in. TL. Yellowmouth 20 in. TL (state)."],["Bag","Up to 4 per person (within the 4 aggregate)"],["Possession",GROUPER_POSS],["License",GROUPER_LIC]],src:[["FWC grouper page",SRC.grouper]]});
+  c.push({sp:"grouper",name:"Other groupers",st:"CHECK",why:"Different rules per species. Read before keeping.",rows:[["No size limit","Rock hind, red hind, coney, graysby, yellowedge, misty, snowy: up to 4 per person (within aggregate)"],["Warsaw, speckled hind","1 of each per vessel (within aggregate)"],["Prohibited","Nassau grouper: no harvest. Goliath grouper: no harvest without a permit."],["License",GROUPER_LIC]],src:[["FWC grouper page",SRC.grouper]]});
+ }
+ if(region.oyster){c.push({sp:"oyster",name:"Oysters",st:(t.m>=7&&t.m<=9)?"CLOSED":"CHECK",why:(t.m>=7&&t.m<=9)?"Wild oyster harvest is closed July 1 to Sept 30.":"Legal only in an FDACS area that is open. San Carlos Bay is not on the current Southern Gulf status list, so assume it is not open.",fdacs:true,rows:[["Size","3 inches or more in greatest dimension. Cull on the spot."],["Bag","Rule text sets recreational limit at 2 bags per person or vessel (whichever is less). A bag is about 60 lb, two 5-gallon buckets, or one 10-gallon bucket. Two versions of the rule exist online, so confirm on flrules.org."],["License","Saltwater fishing license (unless exempt)"],["Location","Lee County allows live oysters."],["FDACS areas","Status list (Oct 2, 2026) shows Pine Island Sound sections 6212, 6222 and 6232 (Matlacha Pass) as conditionally approved and OPEN. San Carlos Bay is not listed."]],src:[["FWC shellfish page",SRC.shell],["Rule chapter 68B-27",SRC.rule]]})}
+ if(region.mussel){c.push({sp:"mussel",name:"Mussels",st:"CHECK",why:"Unresolved. Call FWC before harvesting.",fdacs:true,rows:[["Size and bag","No saltwater mussel size or bag rule found."],["Lee County","Live-shell harvest is banned there except oysters, hard clams, sunray venus clams and coquinas. Mussels are not on that list, and it is unclear whether it covers eating mussels."],["FDACS areas","Harvest only in approved or conditionally approved areas that are open. San Carlos Bay is not on the current Southern Gulf status list."],["License","Saltwater fishing license (unless exempt)"]],src:[["FWC sea shell page",SRC.shells],["FWC shellfish page",SRC.shell]]})}
+ return c}
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
+function render(cards,notes){
+ const o=document.getElementById("out");o.innerHTML=notes.map(n=>'<div class="warn">'+n+'</div>').join("");
+ cards.forEach(c=>{const e=document.createElement("section");e.className="card";
+  e.innerHTML='<header><h2>'+esc(c.name)+'</h2><span class="st '+c.st+'">'+c.st+'</span></header><p>'+esc(c.why)+'</p>'+
+  (c.fdacs?'<div class="warn"><strong>Before harvesting:</strong> open the <a href="'+SRC.fdacs+'" target="_blank" rel="noopener">FDACS Southern Gulf daily status page</a> and find your area. It must be listed as approved or conditionally approved and OPEN. Unclassified waters are closed to all shellfish harvest. Phone: 941-613-0954.</div>':'')+
+  '<dl>'+c.rows.map(r=>'<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd>').join("")+'</dl><p class="src">Sources: '+c.src.map(s=>'<a href="'+s[1]+'" target="_blank" rel="noopener">'+s[0]+'</a>').join(", ")+'. Checked '+CHECKED+'.</p>';
+  o.appendChild(e)})}
+let gps=null;
+const $=id=>document.getElementById(id);
+$("date").value=new Date().toLocaleDateString("en-CA");
+$("src").onchange=()=>{const g=$("src").value==="gps";$("gpsBox").hidden=!g;$("manualBox").hidden=g};
+const SNOOK_S=26+15.227/60,SNOOK_N=27+4.727/60;
+$("gpsBtn").onclick=()=>{
+ const out=$("gpsOut");out.textContent="Finding you...";
+ if(!navigator.geolocation){out.textContent="GPS is not available here. Choose a place instead.";return}
+ try{navigator.geolocation.getCurrentPosition(p=>{gps={lat:p.coords.latitude,lon:p.coords.longitude,acc:p.coords.accuracy};
+  out.textContent=gps.lat.toFixed(4)+" N, "+gps.lon.toFixed(4)+" W, within about "+Math.round(gps.acc)+" m."},
+  e=>{gps=null;out.textContent="Could not get GPS ("+e.message+"). Choose a place instead."},{enableHighAccuracy:true,timeout:15000})}
+ catch(e){out.textContent="GPS blocked. Choose a place instead."}};
+$("go").onclick=()=>{
+ const t=d($("date").value),sp=$("sp").value,notes=[];
+ const region={snook:false,grouper:false,oyster:false,mussel:false};
+ let covered=false;
+ if($("src").value==="gps"){
+  if(!gps){render([],["Tap Get my location first, or choose a place."]);return}
+  const inBox=gps.lat>=SNOOK_S&&gps.lat<=SNOOK_N&&gps.lon>=-82.4&&gps.lon<=-81.6;
+  notes.push("<strong>Detected:</strong> "+gps.lat.toFixed(4)+", "+gps.lon.toFixed(4)+" (about "+Math.round(gps.acc)+" m). "+(inBox?"Treated as the Gulf coast between Venice and Vanderbilt Beach Rd (Charlotte Harbor snook region). Confirm this is where you will fish.":"This is outside the area this prototype covers."));
+  const nm=Math.min(Math.abs(gps.lat-SNOOK_S),Math.abs(gps.lat-SNOOK_N))*60;
+  if(inBox&&nm<Math.max(2,gps.acc/1852*2))notes.push("You are within about "+nm.toFixed(1)+" nautical miles of a snook region line. Rules differ across it. Check FWC for the other side.");
+  if(t.y+"-"+t.m+"-"+t.d!==new Date().toLocaleDateString("en-CA").replace(/-0/g,"-"))notes.push("You chose a different date but are using today's GPS location. Pick a place if you plan to fish elsewhere.");
+  covered=inBox;notes.push("County is not detected. Lee County shell rules are shown as if you are in Lee County.");
+ }else{covered=$("place").value==="scb"}
+ if(!covered){render([],notes.concat(["No verified rules for this place yet. Use the <a href=\""+SRC.snook+"\">FWC regulations pages</a>."]));return}
+ ["snook","grouper","oyster","mussel"].forEach(k=>{region[k]=(sp==="all"||sp===k)});
+ if(t.y<2026||(t.y===2026&&t.m<10&&t.d<1))notes.push("This date is before the last check. Rules may differ.");
+ region.fed=$("waters").value==="fed";
+ let cards=build(t,region);
+ if(region.fed){
+  notes.push("Federal waters: shellfish rules do not apply here. Grouper details come from FWC's state and federal table. NOAA's own federal page has not been checked yet, so confirm there.");
+  cards=cards.filter(c=>c.sp!=="oyster"&&c.sp!=="mussel");
+  cards.forEach(c=>{
+   if(c.sp==="snook")c.rows.push(["Federal waters","Same rules apply in adjacent federal waters."]);
+   if(c.sp==="grouper")c.rows.push(["Federal waters","Closed Feb 1-Mar 31 seaward of the 20-fathom break (except gag, which follows its own season). The Edges closed Jan 1-Apr 30. Yellowmouth has no federal size limit. Federal for-hire permit holders follow federal rules."]);
+  })}
+ render(cards,notes)};
+</script></body></html>
