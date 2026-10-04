@@ -10,5 +10,8 @@
  {"id":"fwc-fish-mgmt-areas","url":"https://atoll.floridamarine.org/arcgis/rest/services/FWC_GIS/OpenData_FWMgmt/FeatureServer/8/query?where=1%3D1&outFields=*&f=geojson","ext":"json"},
  {"id":"gulfcouncil-reeffish-boundary","url":"https://portal.gulfcouncil.org/arcgis/rest/services/Hosted/ReefFish_Federal_State_FMA_Boundary/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson","ext":"json"},
  {"id":"fdacs-service-list","url":"https://services1.arcgis.com/T0NPfOCJr9tmBN93/ArcGIS/rest/services?f=json","ext":"json"},
- {"id":"fdacs-admin-closed","url":"https://services1.arcgis.com/T0NPfOCJr9tmBN93/ArcGIS/rest/services/Admin_Closed_Areas/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson","ext":"json"}
+ {"id":"fdacs-admin-closed","url":"https://services1.arcgis.com/T0NPfOCJr9tmBN93/ArcGIS/rest/services/Admin_Closed_Areas/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson","ext":"json"},
+ {"id":"fdacs-all-areas-status","url":"https://services1.arcgis.com/T0NPfOCJr9tmBN93/ArcGIS/rest/services/ALL_AREAS_Status_Merge_view/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson","ext":"json"},
+ {"id":"fdacs-sha-allyear","url":"https://services1.arcgis.com/T0NPfOCJr9tmBN93/ArcGIS/rest/services/SHA_allyear_Backup_05_16_2025/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson","ext":"json"},
+ {"id":"fdacs-temp-closures","url":"https://services1.arcgis.com/T0NPfOCJr9tmBN93/ArcGIS/rest/services/TemporaryClosures/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson","ext":"json"}
 ]
