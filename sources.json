@@ -7,7 +7,8 @@
  {"id":"fwc-unregulated","url":"https://myfwc.com/fishing/saltwater/recreational/unregulated/","ext":"html"},
  {"id":"fwc-index","url":"https://myfwc.com/fishing/saltwater/recreational/","ext":"html"},
  {"id":"fdacs-southgulf-status","url":"https://shellfish.fdacs.gov/seas/seas_southgulf.htm","ext":"html"},
- {"id":"fwc-fish-mgmt-areas","url":"https://atoll.floridamarine.org/arcgis/rest/services/FWC_GIS/OpenData_FWMgmt/FeatureServer/8/query?where=1%3D1&outFields=*&f=geojson","ext":"json","note":"layer 8 confirmed to exist and support GeoJSON"},
- {"id":"gulfcouncil-reeffish-boundary","url":"https://portal.gulfcouncil.org/arcgis/rest/services/Hosted/ReefFish_Federal_State_FMA_Boundary/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson","ext":"json","note":"layer index 0 is a guess; check the service page"},
- {"id":"fdacs-shellfish-areas","url":"https://services1.arcgis.com/T0NPfOCJr9tmBN93/ArcGIS/rest/services/77BodyCSpring/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson","ext":"json","note":"layer index 0 is a guess; confirm this service is FDACS's current one"}
+ {"id":"fwc-fish-mgmt-areas","url":"https://atoll.floridamarine.org/arcgis/rest/services/FWC_GIS/OpenData_FWMgmt/FeatureServer/8/query?where=1%3D1&outFields=*&f=geojson","ext":"json"},
+ {"id":"gulfcouncil-reeffish-boundary","url":"https://portal.gulfcouncil.org/arcgis/rest/services/Hosted/ReefFish_Federal_State_FMA_Boundary/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson","ext":"json"},
+ {"id":"fdacs-service-list","url":"https://services1.arcgis.com/T0NPfOCJr9tmBN93/ArcGIS/rest/services?f=json","ext":"json"},
+ {"id":"fdacs-admin-closed","url":"https://services1.arcgis.com/T0NPfOCJr9tmBN93/ArcGIS/rest/services/Admin_Closed_Areas/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson","ext":"json"}
 ]
