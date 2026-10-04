@@ -1,0 +1,60 @@
+{
+ "run_utc": "2026-10-04T14:48:23.163478Z",
+ "sources": {
+  "fwc-snook": {
+   "ok": true,
+   "bytes": 195213,
+   "sha256": "bf0d69485b227d1f"
+  },
+  "fwc-groupers": {
+   "ok": true,
+   "bytes": 247907,
+   "sha256": "1b86a995b8841d95"
+  },
+  "fwc-snappers": {
+   "ok": true,
+   "bytes": 226705,
+   "sha256": "7d9959f23f556aa8"
+  },
+  "fwc-shellfish": {
+   "ok": true,
+   "bytes": 219893,
+   "sha256": "4bf7393fbf978d93"
+  },
+  "fwc-sea-shells": {
+   "ok": true,
+   "bytes": 162454,
+   "sha256": "c7cea907dfff3203"
+  },
+  "fwc-unregulated": {
+   "ok": true,
+   "bytes": 166032,
+   "sha256": "4e142c0ebf17a86f"
+  },
+  "fwc-index": {
+   "ok": true,
+   "bytes": 199805,
+   "sha256": "4c80e36d4ce6b6b8"
+  },
+  "fdacs-southgulf-status": {
+   "ok": true,
+   "bytes": 64519,
+   "sha256": "5a2349b876771759"
+  },
+  "fwc-fish-mgmt-areas": {
+   "ok": true,
+   "bytes": 7058,
+   "sha256": "774e3ec49190e10b"
+  },
+  "gulfcouncil-reeffish-boundary": {
+   "ok": true,
+   "bytes": 7058,
+   "sha256": "774e3ec49190e10b"
+  },
+  "fdacs-shellfish-areas": {
+   "ok": true,
+   "bytes": 72990,
+   "sha256": "1c67c52fd21e625e"
+  }
+ }
+}
