@@ -19,4 +19,5 @@ jobs:
           git config user.email "snapshot-bot@users.noreply.github.com"
           git add data
           git diff --cached --quiet || git commit -m "Source snapshot $(date -u +%F)"
+          git pull --rebase origin main
           git push
