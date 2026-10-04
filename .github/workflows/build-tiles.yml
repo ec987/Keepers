@@ -1,0 +1,37 @@
+name: build-map-tiles
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  tiles:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get pmtiles tool
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download --repo protomaps/go-pmtiles --pattern '*Linux_x86_64.tar.gz'
+          tar -xzf *Linux_x86_64.tar.gz pmtiles
+      - name: Extract Southwest Florida
+        run: |
+          mkdir -p data/app
+          for d in 1 2 3 4 5 6 7; do
+            day=$(date -u -d "-$d day" +%Y%m%d)
+            if ./pmtiles show https://build.protomaps.com/$day.pmtiles > /dev/null 2>&1; then
+              echo "Using build $day"
+              ./pmtiles extract https://build.protomaps.com/$day.pmtiles data/app/basemap.pmtiles --bbox=-83.2,25.9,-81.3,27.2 --maxzoom=12
+              break
+            fi
+          done
+          ls -l data/app/basemap.pmtiles
+          test $(stat -c%s data/app/basemap.pmtiles) -lt 90000000
+      - name: Commit
+        run: |
+          git config user.name "snapshot-bot"
+          git config user.email "snapshot-bot@users.noreply.github.com"
+          git add data/app/basemap.pmtiles
+          git commit -m "Update basemap tiles" || echo "no change"
+          git pull --rebase -X theirs origin main
+          git push
