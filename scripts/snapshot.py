@@ -1,6 +1,6 @@
 """Download each source in sources.json to data/raw/ and record results in data/status.json.
 A source is saved only if its content looks right. Otherwise the last good copy is kept."""
-import json, hashlib, time, datetime, urllib.request, pathlib
+import json, hashlib, time, datetime, urllib.request, pathlib, os
 root = pathlib.Path(__file__).resolve().parent.parent
 raw = root / "data" / "raw"; raw.mkdir(parents=True, exist_ok=True)
 status = {"run_utc": datetime.datetime.utcnow().isoformat() + "Z", "sources": {}}
@@ -22,6 +22,8 @@ def check(ext, body):
 
 for s in json.load(open(root / "sources.json")):
     sid = s["id"]
+    if s.get("weekly") and os.environ.get("GITHUB_EVENT_NAME") != "workflow_dispatch" and datetime.datetime.utcnow().weekday() != 6:
+        continue
     try:
         req = urllib.request.Request(s["url"], headers={"User-Agent": "fishing-rules-snapshot/0.2 (personal project)"})
         for attempt in range(3):
