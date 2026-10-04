@@ -22,6 +22,7 @@ button{background:var(--accent);color:#fff;border-color:var(--accent);font-weigh
 .OPEN{color:var(--open)}.CLOSED{color:var(--closed)}.CHECK{color:var(--check)}
 .card header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
 dl{margin:6px 0 0;display:grid;grid-template-columns:6.5rem 1fr;gap:3px 10px}dt{color:var(--mute);font-weight:600}dd{margin:0}
+label.chk{display:flex;gap:8px;align-items:center;font-weight:600;margin:10px 0 2px}label.chk input{width:auto}
 .src,.foot,.mute{font-size:.85rem;color:var(--mute)}a{color:var(--accent)}
 </style></head><body><main>
 <h1>What can I keep?</h1>
@@ -34,9 +35,10 @@ dl{margin:6px 0 0;display:grid;grid-template-columns:6.5rem 1fr;gap:3px 10px}dt{
 <label for="coord">Or coordinates (latitude, longitude)</label>
 <div class="row"><input id="coord" placeholder="26.48, -82.02" inputmode="decimal"><button id="coordBtn" type="button">Go</button></div>
 <button class="alt" id="gps" type="button" style="margin-top:8px">Use my GPS (for where I am now)</button>
+<label class="chk"><input type="checkbox" id="shellOpt" checked> Include shellfish (oysters, mussels, shellfish areas)</label>
 <p id="msg" class="mute" aria-live="polite">Tap the map to drop a pin. Drag it to adjust.</p>
 <div id="map" aria-label="Map. Tap to place a pin."></div>
-<p class="mute">Orange: federal waters. Red: shellfish harvest prohibited. Green: shellfish conditionally approved (check status). No color in water: unclassified, treated as closed.</p>
+<p class="mute">Orange: federal waters.<span id="legShell"> Red: shellfish harvest prohibited. Green: shellfish conditionally approved (check status). No color in water: unclassified, treated as closed.</span></p>
 </div>
 <div id="where"></div><div id="out"></div>
 <p class="foot">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, via Protomaps. State/federal line: BOEM Submerged Lands Act and Gulf Council reef fish boundary. Shellfish areas: FDACS classification (May 2025 copy). Boundaries are reference data, not legal descriptions.</p>
@@ -50,7 +52,8 @@ const GLIC="Saltwater fishing license (unless exempt) and State Reef Fish Survey
 const GPOS="Land with head and fins intact. Reef fish gear rules apply. Charter captain and crew: zero bag.";
 const AGG="No more than 4 grouper of all species combined, per person per day.";
 const SNOOK_S=26+15.227/60,SNOOK_N=27+4.727/60;
-let B=null,pin=null,marker=null,map=null;
+let B=null,pin=null,marker=null,map=null,SHELL=true;
+try{SHELL=localStorage.getItem("shell")!=="off"}catch(e){}
 
 /* ---------- geometry ---------- */
 function inRing(x,y,r){let c=false;for(let i=0,j=r.length-1;i<r.length;j=i++){const a=r[i],b=r[j];if((a[1]>y)!==(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])c=!c}return c}
@@ -119,11 +122,11 @@ function show(){
   let html='<div class="panel"><strong>Location:</strong> '+w.lat.toFixed(4)+', '+w.lon.toFixed(4)+(w.acc?" (GPS within about "+Math.round(w.acc)+" m)":"")+'<br>';
   if(!B)html+='<span class="CHECK">Boundary data did not load. Waters and shellfish areas are unknown, so the stricter rule is shown.</span>';
   else if(!w.inside){wh.innerHTML=html+'This pin is outside the area this page covers (Gulf coast from about Venice to south of Naples). No verified rules here.</div>';out.innerHTML="";return}
-  else html+='<strong>Waters:</strong> '+{state:"State waters",federal:"Federal waters",uncertain:"Near the state/federal line ("+w.nm.toFixed(1)+" nm away), so rules for both are shown"}[w.waters]+'<br><strong>Shellfish area:</strong> '+(w.shell==="CA"?esc(w.shellName):(w.shell==="P"?"Prohibited ("+esc(w.shellName||"")+")":"Unclassified (treated as closed)"))+'<br><span class="mute">Check that this is where you will fish. Boundaries are approximate.</span>';
+  else html+='<strong>Waters:</strong> '+{state:"State waters",federal:"Federal waters",uncertain:"Near the state/federal line ("+w.nm.toFixed(1)+" nm away), so rules for both are shown"}[w.waters]+(SHELL?'<br><strong>Shellfish area:</strong> '+(w.shell==="CA"?esc(w.shellName):(w.shell==="P"?"Prohibited ("+esc(w.shellName||"")+")":"Unclassified (treated as closed)")):'')+'<br><span class="mute">Check that this is where you will fish. Boundaries are approximate.</span>';
   html+="</div>";
   if(t.y!==2026)html+='<div class="warn">Rules here were checked for 2026 only. Seasons for other years may differ.</div>';
   wh.innerHTML=html;
-  const cards=build(t,w),groups=[["OPEN","You can keep (if you meet every requirement)"],["CHECK","Check first"],["CLOSED","Closed or not allowed"]];
+  const cards=build(t,w).filter(c=>SHELL||!/^(Oysters|Mussels)$/.test(c.name)),groups=[["OPEN","You can keep (if you meet every requirement)"],["CHECK","Check first"],["CLOSED","Closed or not allowed"]];
   out.innerHTML=groups.map(([k,title])=>{const g=cards.filter(c=>c.st===k);if(!g.length)return"";return'<h3 class="'+k+'">'+title+' ('+g.length+')</h3>'+g.map(c=>'<section class="card"><header><h2>'+esc(c.name)+'</h2><span class="st '+c.st+'">'+c.st+'</span></header><p>'+esc(c.why)+'</p>'+(c.fdacs?'<div class="warn"><strong>Before harvesting shellfish:</strong> find your area on the <a href="'+SRC.fdacs+'" target="_blank" rel="noopener">FDACS Southern Gulf daily status page</a>. It must be approved or conditionally approved and OPEN. Phone: 941-613-0954.</div>':'')+'<dl>'+c.rows.map(r=>'<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd>').join("")+'</dl><p class="src">Sources: '+c.src.map(s=>'<a href="'+s[1]+'" target="_blank" rel="noopener">'+s[0]+'</a>').join(", ")+'. Checked '+CHECKED+'.</p></section>').join("")}).join("")}
 function setPin(lon,lat,acc,msg,fly){
   pin={lon,lat,acc};document.getElementById("msg").textContent=msg||"Pin placed. Drag it or tap the map to move it.";
@@ -165,7 +168,10 @@ function addOverlays(){
   const f=[];B.shellfish.forEach(s=>s.rings.forEach(p=>f.push({type:"Feature",properties:{c:/Prohibited/.test(s.class)?"P":"A"},geometry:{type:"Polygon",coordinates:p}})));
   map.addSource("sh",{type:"geojson",data:{type:"FeatureCollection",features:f}});
   map.addLayer({id:"shfill",type:"fill",source:"sh",paint:{"fill-color":["match",["get","c"],"P","#ff1f1f","#2f9e55"],"fill-opacity":["match",["get","c"],"P",0.55,0.35]}});
-  map.addLayer({id:"shline",type:"line",source:"sh",paint:{"line-color":["match",["get","c"],"P","#c40000","#1f7a3d"],"line-width":1}})}
+  map.addLayer({id:"shline",type:"line",source:"sh",paint:{"line-color":["match",["get","c"],"P","#c40000","#1f7a3d"],"line-width":1}});
+  applyShell()}
+function applyShell(){document.getElementById("shellOpt").checked=SHELL;document.getElementById("legShell").style.display=SHELL?"":"none";if(map&&map.getLayer("shfill")){["shfill","shline"].forEach(id=>map.setLayoutProperty(id,"visibility",SHELL?"visible":"none"))}}
+document.getElementById("shellOpt").onchange=e=>{SHELL=e.target.checked;try{localStorage.setItem("shell",SHELL?"on":"off")}catch(x){}applyShell();show()};
 fetch("data/app/boundaries.json").then(r=>r.json()).then(j=>{B=j;if(map&&map.isStyleLoaded())addOverlays();else if(map)map.once("load",addOverlays);show()}).catch(()=>{B=null;show()});
-initMap();
+initMap();applyShell();
 </script></body></html>
