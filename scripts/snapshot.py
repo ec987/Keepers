@@ -24,7 +24,14 @@ for s in json.load(open(root / "sources.json")):
     sid = s["id"]
     try:
         req = urllib.request.Request(s["url"], headers={"User-Agent": "fishing-rules-snapshot/0.2 (personal project)"})
-        body = urllib.request.urlopen(req, timeout=60).read()
+        for attempt in range(3):
+            try:
+                body = urllib.request.urlopen(req, timeout=60).read()
+                break
+            except Exception:
+                if attempt == 2:
+                    raise
+                time.sleep(5)
         problem = check(s["ext"], body)
         entry = {"ok": problem is None, "bytes": len(body), "sha256": hashlib.sha256(body).hexdigest()[:16]}
         if problem:
