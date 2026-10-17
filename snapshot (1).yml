@@ -1,0 +1,31 @@
+name: snapshot-sources
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 11 * * *"
+permissions:
+  contents: write
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install shapely
+      - run: python scripts/snapshot.py
+      - run: python scripts/build_app_data.py
+      - run: python scripts/build_catalog.py
+      - run: python scripts/verify_catalog.py
+      - name: Commit changes
+        run: |
+          git config user.name "snapshot-bot"
+          git config user.email "snapshot-bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet || git commit -m "Source snapshot $(date -u +%F)"
+          git pull --rebase -X theirs origin main
+          git push
