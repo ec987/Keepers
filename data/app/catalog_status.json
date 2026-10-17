@@ -1,0 +1,205 @@
+{
+ "run_utc": "2026-10-17T18:48:50.916078Z",
+ "species": {
+  "snook": {
+   "ok": true,
+   "missing": []
+  },
+  "red-drum": {
+   "ok": true,
+   "missing": []
+  },
+  "seatrout": {
+   "ok": true,
+   "missing": []
+  },
+  "black-drum": {
+   "ok": true,
+   "missing": []
+  },
+  "sheepshead": {
+   "ok": true,
+   "missing": []
+  },
+  "flounder": {
+   "ok": true,
+   "missing": []
+  },
+  "pompano": {
+   "ok": true,
+   "missing": []
+  },
+  "mullet": {
+   "ok": true,
+   "missing": []
+  },
+  "tripletail": {
+   "ok": true,
+   "missing": []
+  },
+  "bluefish": {
+   "ok": true,
+   "missing": []
+  },
+  "spanish-mackerel": {
+   "ok": true,
+   "missing": []
+  },
+  "king-mackerel": {
+   "ok": true,
+   "missing": []
+  },
+  "cobia": {
+   "ok": true,
+   "missing": []
+  },
+  "barracuda": {
+   "ok": true,
+   "missing": []
+  },
+  "spot-croaker": {
+   "ok": true,
+   "missing": []
+  },
+  "sand-seatrout": {
+   "ok": true,
+   "missing": []
+  },
+  "dolphinfish": {
+   "ok": true,
+   "missing": []
+  },
+  "wahoo": {
+   "ok": true,
+   "missing": []
+  },
+  "gag": {
+   "ok": true,
+   "missing": []
+  },
+  "black-grouper": {
+   "ok": true,
+   "missing": []
+  },
+  "red-grouper": {
+   "ok": true,
+   "missing": []
+  },
+  "scamp": {
+   "ok": true,
+   "missing": []
+  },
+  "grouper-other": {
+   "ok": true,
+   "missing": []
+  },
+  "hogfish": {
+   "ok": true,
+   "missing": []
+  },
+  "triggerfish": {
+   "ok": true,
+   "missing": []
+  },
+  "greater-amberjack": {
+   "ok": true,
+   "missing": []
+  },
+  "lesser-amberjack": {
+   "ok": true,
+   "missing": []
+  },
+  "black-sea-bass": {
+   "ok": true,
+   "missing": []
+  },
+  "red-porgy": {
+   "ok": true,
+   "missing": []
+  },
+  "tilefish": {
+   "ok": true,
+   "missing": []
+  },
+  "red-snapper": {
+   "ok": true,
+   "missing": []
+  },
+  "lane-snapper": {
+   "ok": true,
+   "missing": []
+  },
+  "vermilion": {
+   "ok": true,
+   "missing": []
+  },
+  "gray-snapper": {
+   "ok": true,
+   "missing": []
+  },
+  "mutton-snapper": {
+   "ok": true,
+   "missing": []
+  },
+  "cubera-snapper": {
+   "ok": true,
+   "missing": []
+  },
+  "other-snappers": {
+   "ok": true,
+   "missing": []
+  },
+  "stone-crab": {
+   "ok": true,
+   "missing": []
+  },
+  "blue-crab": {
+   "ok": true,
+   "missing": []
+  },
+  "lobster": {
+   "ok": true,
+   "missing": []
+  },
+  "shrimp": {
+   "ok": true,
+   "missing": []
+  },
+  "sharks": {
+   "ok": true,
+   "missing": []
+  },
+  "permit-pompano": {
+   "ok": true,
+   "missing": []
+  },
+  "tuna-billfish": {
+   "ok": true,
+   "missing": []
+  },
+  "lionfish": {
+   "ok": true,
+   "missing": []
+  },
+  "unregulated": {
+   "ok": true,
+   "missing": []
+  },
+  "tarpon": {
+   "ok": true,
+   "missing": []
+  },
+  "bonefish": {
+   "ok": true,
+   "missing": []
+  },
+  "goliath": {
+   "ok": true,
+   "missing": []
+  },
+  "nassau": {
+   "ok": true,
+   "missing": []
+  }
+ }
+}

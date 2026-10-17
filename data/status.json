@@ -1,40 +1,40 @@
 {
- "run_utc": "2026-10-17T14:01:17.108880Z",
+ "run_utc": "2026-10-17T18:45:37.664680Z",
  "sources": {
   "fwc-snook": {
    "ok": true,
    "bytes": 195213,
-   "sha256": "cb374faac038de01"
+   "sha256": "d6102722edc61792"
   },
   "fwc-groupers": {
    "ok": true,
    "bytes": 247907,
-   "sha256": "a05a5787d828d0db"
+   "sha256": "537b556f8a2a09e1"
   },
   "fwc-snappers": {
    "ok": true,
    "bytes": 226705,
-   "sha256": "2c252b1ab1a6dd4b"
+   "sha256": "5f6c9d91a3cb2348"
   },
   "fwc-shellfish": {
    "ok": true,
    "bytes": 219893,
-   "sha256": "3aea7478cf96ee09"
+   "sha256": "6348dca070570073"
   },
   "fwc-sea-shells": {
    "ok": true,
    "bytes": 162454,
-   "sha256": "f88764a77e8656c7"
+   "sha256": "47c9507a3609ad2a"
   },
   "fwc-unregulated": {
    "ok": true,
    "bytes": 166032,
-   "sha256": "b66705033c58e952"
+   "sha256": "efc94b48d478a7eb"
   },
   "fwc-index": {
    "ok": true,
    "bytes": 199805,
-   "sha256": "7c532d2485df83bd"
+   "sha256": "b86c339209ed7fd5"
   },
   "gulfcouncil-layer-list": {
    "ok": true,
@@ -71,11 +71,245 @@
    "bytes": 4697962,
    "sha256": "3b2905d7a01168d5"
   },
+  "fdacs-sha-allyear": {
+   "ok": true,
+   "bytes": 27961351,
+   "sha256": "a5a0ac401585a809"
+  },
   "fdacs-temp-closures": {
    "ok": true,
    "bytes": 4706617,
    "sha256": "cc9a1a4f4fcb0e11"
   }
  },
- "species": {}
+ "species": {
+  "amberjack": {
+   "ok": true,
+   "chars": 1477
+  },
+  "bahamas": {
+   "ok": true,
+   "chars": 4071
+  },
+  "barracuda": {
+   "ok": true,
+   "chars": 723
+  },
+  "bay-scallops": {
+   "ok": true,
+   "chars": 4976
+  },
+  "billfish-tuna": {
+   "ok": true,
+   "chars": 5608
+  },
+  "black-drum": {
+   "ok": true,
+   "chars": 736
+  },
+  "black-sea-bass": {
+   "ok": true,
+   "chars": 839
+  },
+  "blue-crab": {
+   "ok": true,
+   "chars": 6948
+  },
+  "blue-land-crabs": {
+   "ok": true,
+   "chars": 917
+  },
+  "bluefish": {
+   "ok": true,
+   "chars": 1295
+  },
+  "bnp": {
+   "ok": true,
+   "chars": 5164
+  },
+  "bonefish": {
+   "ok": true,
+   "chars": 2604
+  },
+  "cobia": {
+   "ok": true,
+   "chars": 648
+  },
+  "dolphinfish": {
+   "ok": true,
+   "chars": 756
+  },
+  "extended-trips": {
+   "ok": true,
+   "chars": 3441
+  },
+  "federal-waters": {
+   "ok": true,
+   "chars": 3009
+  },
+  "fish-feeding": {
+   "ok": true,
+   "chars": 1298
+  },
+  "flounder": {
+   "ok": true,
+   "chars": 897
+  },
+  "full-rule": {
+   "ok": true,
+   "chars": 2419
+  },
+  "gear-rules": {
+   "ok": true,
+   "chars": 3504
+  },
+  "goliath": {
+   "ok": true,
+   "chars": 8938
+  },
+  "groupers": {
+   "ok": true,
+   "chars": 8104
+  },
+  "hogfish": {
+   "ok": true,
+   "chars": 1543
+  },
+  "king-mackerel": {
+   "ok": true,
+   "chars": 1077
+  },
+  "lionfish": {
+   "ok": true,
+   "chars": 7163
+  },
+  "lobster": {
+   "ok": true,
+   "chars": 4505
+  },
+  "maps": {
+   "ok": true,
+   "chars": 14001
+  },
+  "marine-life": {
+   "ok": true,
+   "chars": 13468
+  },
+  "measurement": {
+   "ok": true,
+   "chars": 3994
+  },
+  "mullet": {
+   "ok": true,
+   "chars": 902
+  },
+  "permit": {
+   "ok": true,
+   "chars": 3147
+  },
+  "puffer": {
+   "ok": true,
+   "chars": 1000
+  },
+  "red-drum": {
+   "ok": true,
+   "chars": 5924
+  },
+  "red-porgy": {
+   "ok": true,
+   "chars": 835
+  },
+  "sea-shells": {
+   "ok": true,
+   "chars": 2895
+  },
+  "sharks": {
+   "ok": true,
+   "chars": 13523
+  },
+  "sheepshead": {
+   "ok": true,
+   "chars": 1664
+  },
+  "shellfish": {
+   "ok": true,
+   "chars": 12140
+  },
+  "shrimp": {
+   "ok": true,
+   "chars": 5044
+  },
+  "skyway": {
+   "ok": true,
+   "chars": 2314
+  },
+  "snappers": {
+   "ok": true,
+   "chars": 7792
+  },
+  "snook": {
+   "ok": true,
+   "chars": 8258
+  },
+  "spanish-mackerel": {
+   "ok": true,
+   "chars": 923
+  },
+  "spearing": {
+   "ok": true,
+   "chars": 2646
+  },
+  "spot-croaker": {
+   "ok": true,
+   "chars": 496
+  },
+  "spotted-seatrout": {
+   "ok": true,
+   "chars": 9981
+  },
+  "state-reef-fish-survey": {
+   "ok": true,
+   "chars": 6584
+  },
+  "stone-crab": {
+   "ok": true,
+   "chars": 4995
+  },
+  "tarpon": {
+   "ok": true,
+   "chars": 6920
+  },
+  "tilefish": {
+   "ok": true,
+   "chars": 2112
+  },
+  "traps": {
+   "ok": true,
+   "chars": 3236
+  },
+  "triggerfish": {
+   "ok": true,
+   "chars": 1402
+  },
+  "tripletail": {
+   "ok": true,
+   "chars": 632
+  },
+  "unregulated": {
+   "ok": true,
+   "chars": 2125
+  },
+  "wahoo": {
+   "ok": true,
+   "chars": 360
+  },
+  "wdr": {
+   "ok": true,
+   "chars": 2013
+  },
+  "weakfish": {
+   "ok": true,
+   "chars": 1618
+  }
+ }
 }
