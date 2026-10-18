@@ -166,40 +166,194 @@ add("goliath","Goliath grouper","Never keep","goliath","n/a","Harvest prohibited
     [["Handling","Release immediately; do not lift large fish out of the water."]],None,SAME("Applies in Florida waters."),["Harvest is prohibited without a permit."],status="CLOSED",why="Harvest prohibited without a permit.")
 add("nassau","Nassau grouper","Never keep","groupers","n/a","Harvest prohibited",{"kind":"never"},[],None,SAME("Gulf and Atlantic."),["Nassau\nHarvest Prohibited"],status="CLOSED",why="Harvest prohibited.")
 
-# ---------- full FWC rule text, copied word for word from the saved pages ----------
-STOP = re.compile(r"^(more information|information|related links|management history:?|\U0001F4AC ask buck!|\u2716)$|management$|^regulation(s)? (history|update)$", re.I)
-DROP = re.compile(r"^(expand/collapse.*|image credit.*|copyright.*|photo.*|skip to main content|learn more|full text (rule|regulations?)|.* species profile|federal (gulf|atlantic) regulations|saf?mc website)$", re.I)
+# ---------- rule text from the saved FWC pages, trimmed to what matters for keeping a fish ----------
+# Lines are copied word for word. We drop only: news banners, links, other coasts (Atlantic), Biscayne National Park,
+# other regions' text, region boundary descriptions, and the other species on shared pages.
+# Federal-only lines are kept but tagged "f" so the page shows them only when the pin is in or near federal waters.
+STOP = re.compile(r"^(more information|information|related links|management history:?|\U0001F4AC ask buck!|✖)$|management$|^regulation(s)? history$|^federal code of regulations$", re.I)
+NOISE = re.compile(r"port meeting|SAFMC|Fishery Management Council is hosting|^learn more|^why:|^effective\b.*\d{4}:?$|^regulation update|image (credit|courtesy)|^copyright|^photo|^publications$|maps are not to scale|species profile|^full (text )?rule|^full rule|ask buck|^description$|return .em right|a resource for anglers|20-fathom map|view larger|^have you signed up|state reef fish angler designation|^participation mandatory|^annual renewal|now in effect|skip to main content|^expand/collapse aggregate|^trap diagrams$|^report .* sightings|^federal (gulf|atlantic) regulations$|^gulf federal waters rules$|^atlantic federal waters rules$|^regulations by coast$|^tilefish inhabit|^although (the crab|it is currently)|^the quicker the crab|^if a juvenile female|^releasing female|^blue crap trap|^previous$|^next$|^links for more information|^can i feed sharks|^additional grouper resources|^snapper research|^gulf red snapper$|^state reef fish survey$|^additional information$|^for more, see noaa|^florida regulations:?$|^(shore-based shark fishing|federal permit holders|shark-smart fishing|tagged sharks|shore-based shark fishing course|take the course)$", re.I)
+LABELS = {"min. size limit","daily bag limit","season","slot limit","minimum size limit","size limit","bag limit","vessel limit","daily vessel limit"}
 REGION = re.compile(r"^(Panhandle|Big Bend|Tampa Bay|Sarasota Bay|Charlotte Harbor|Southwest|Southeast|Indian River Lagoon|Northeast) Region$")
-def page_lines(text):
+KEEP_REGIONS = ("Sarasota Bay", "Charlotte Harbor", "Southwest")
+REGION_KEEP = re.compile(r"^(season|open season|closed season|slot|slot limit|minimum|bag|daily bag|vessel|may possess|may not possess|catch|special|\*|note)", re.I)
+# which accordion blocks on a shared page belong to which catalog entry
+PARTS = {"gag":["Gag"],"black-grouper":["Black"],"red-grouper":["Red"],"scamp":["Scamp","Yellowfin","Yellowmouth"],
+ "grouper-other":["Rock Hind/Red Hind","Coney/Graysby","Yellowedge/Misty","Warsaw/Speckled Hind","Snowy"],"nassau":["Nassau"],
+ "red-snapper":["Red"],"vermilion":["Vermilion"],"gray-snapper":["Gray (Mangrove)"],"mutton-snapper":["Mutton"],"cubera-snapper":["Cubera"],
+ "lane-snapper":["Lane"],"other-snappers":["Schoolmaster","Black Wenchman, Queen, Blackfin, and Silk","Black, Wenchman, Queen, Blackfin, and Silk","Yellowtail, Dog, and Mahogany"]}
+AGG_BLOCK = {"gag","black-grouper","red-grouper","scamp","grouper-other","nassau"}
+KW = {"gag":["gag"],"lane-snapper":["lane"],"red-snapper":["red snapper"],"greater-amberjack":["greater amberjack"],"lesser-amberjack":["lesser amberjack"]}
+def raw_lines(text):
     L = [l.strip() for l in text.splitlines()]
     try: i = L.index("Recreational Regulations") + 2
     except ValueError: i = 0
     out = []
     for l in L[i:]:
         if STOP.search(l) and out: break
-        if not l or DROP.match(l): continue
-        out.append(l)
+        if l: out.append(l)
     return out
-def split_regions(lines):
-    pre, regs, post, cur = [], {}, [], None
-    for l in lines:
-        m = REGION.match(l)
-        if m: cur = m.group(1); regs[cur] = [l]; continue
-        if l == "Other Regulations": cur = None; post.append(l); continue
-        if post: post.append(l)
-        elif cur: regs[cur].append(l)
-        else: pre.append(l)
-    return {"pre": pre, "regions": regs, "post": post}
-texts = {}
-for slug in sorted({e["slug"] for e in E} | {"gear-rules"}):
-    p = root/"data"/"raw"/"species"/(slug + ".txt")
-    if not p.exists(): continue
-    lines = page_lines(p.read_text(encoding="utf8"))
-    if any(REGION.match(l) for l in lines):
-        t = split_regions(lines)
-        t["regions"] = {k: v for k, v in t["regions"].items() if k in ("Sarasota Bay", "Charlotte Harbor", "Southwest")}  # the three regions this page covers
-        texts[slug] = t
-    else: texts[slug] = {"lines": lines}
+def merge_labels(lines):
+    out, i = [], 0
+    while i < len(lines):
+        l = lines[i]
+        if l.rstrip(":").lower() in LABELS and i + 1 < len(lines) and lines[i+1].rstrip(":").lower() not in LABELS:
+            out.append(l.rstrip(":") + ": " + lines[i+1]); i += 2
+        else: out.append(l); i += 1
+    return out
+FEDHDR = re.compile(r"^(federal( waters)?( regulations| rules)?|federal - gulf and atlantic|gulf and atlantic federal waters regulations|gulf federal waters( rules| regulations)?|federal regulations):?$", re.I)
+def hdr_kind(l):
+    """return (coast, fed) if the line is a section header, else None. coast: 'gulf','atlantic','all'"""
+    if len(l) > 190 or re.search(r"\d", l.split("(")[0]) or re.search(r"season open", l, re.I): return None
+    low = l.lower().rstrip(":")
+    if low in ("other regulations", "regulations", "gear requirements", "gear requirements:"): return ("all", False) if low == "other regulations" else None
+    if re.match(r"^(gulf|atlantic)$", low): return ("gulf" if low == "gulf" else "atlantic", False)
+    if FEDHDR.match(l): return ("all", True)
+    m = re.match(r"^(gulf|atlantic)\b.*(waters|regulations|state)", low)
+    if m and ":" not in l.split("(")[0][:40] or (m and low.startswith(("gulf state","gulf of america regulations","atlantic state","atlantic regulations","atlantic federal"))):
+        if low.startswith("atlantic") and "gulf" not in low: return ("atlantic", "federal" in low and "state" not in low)
+        if "federal" in low and "state" not in low and "regulations (" not in low: return ("all", True)
+        return ("gulf", False)
+    return None
+def parse(lines):
+    """-> list of dict(t, coast, fed, block)"""
+    items, coast, fed, block = [], "all", False, None
+    for l in merge_labels(lines):
+        if l.startswith("##"):
+            coast, fed, block = "all", False, None
+            items.append(dict(t=l[2:], coast="all", fed=False, block=None, h=True)); continue
+        m = re.match(r"^Expand/Collapse (.+)$", l)
+        if m:
+            name = m.group(1).strip()
+            if items and items[-1]["t"] == name: items.pop()
+            block = name; items.append(dict(t=name, coast=coast, fed=fed, block=block, head=True)); continue
+        k = hdr_kind(l)
+        if k:
+            coast, fed = k[0], k[1]
+            if k[0] != "all" or k[1] or l.lower().startswith("other regulations"): block = None
+            items.append(dict(t=l, coast=coast, fed=fed, block=block, head=True)); continue
+        it = dict(t=l, coast=coast, fed=fed, block=block)
+        if re.match(r"^(gulf )?federal\b", l, re.I): it["fed"] = True
+        if re.match(r"^reef fish gear requirements apply|^note: reef fish gear requirements apply", l, re.I): it["block"] = None
+        items.append(it)
+    return items
+def clean_banner(lines):
+    """leading news banners are short groups of lines that end with 'Learn More'; return (banner_groups, rest)"""
+    groups, cur, start = [], [], 0
+    for i, l in enumerate(lines[:80]):
+        if l.lower() == "learn more":
+            if len(cur) > 6: break
+            groups.append(cur); cur = []; start = i + 1
+        else:
+            if l.startswith("NEW ") and cur: groups.append(cur); cur = []
+            cur.append(l)
+            if len(cur) > 6: break
+    return groups, lines[start:]
+EXTRA = {  # extra lines to drop for one page (other regions, promotions)
+ "lionfish": r"^interested in selling|^the fwc only issues permits|monroe county|^habitat and fishing tips",
+ "unregulated": r"^for more information",
+ "tarpon": r"jig prohibited example|^\(note: this video|^map of boca grande",
+ "goliath": r"^catch and release$|^goliath harvest program$|^life history$|^population assessment$|^catching and releasing goliath",
+
+ "lobster": r"monroe|florida keys|marathon|^florida.s spiny lobster season$",
+ "blue-crab": r"st\. johns|georgia/florida|brevard|franklin county|hernando through wakulla|regional blue crab trap closures|^in an effort|^these six",
+ "shrimp": r"^northeast region|^northwest region|^any tributary|^inland waters|^all waters of (sheepshead|big bayou|indian lagoon|ochlockonee)|big bend shrimp closed area|miami-dade|^\*view the full|^within the big bend closed area",
+}
+def select(items, eid, kws, slug=""):
+    parts = PARTS.get(eid); has_blocks = any(i["block"] for i in items)
+    out = []
+    for it in items:
+        t = it["t"]
+        if it["coast"] == "atlantic": continue
+        if re.search(r"atlantic", t, re.I) and not re.search(r"gulf", t, re.I): continue
+        if re.search(r"biscayne", t, re.I) or NOISE.search(t): continue
+        if EXTRA.get(slug) and re.search(EXTRA[slug], t, re.I): continue
+        if has_blocks and it["block"]:
+            if parts is not None and it["block"] not in parts: continue
+        out.append(["h" if it.get("h") else ("f" if it["fed"] else "s"), t])
+    # drop section headers that ended up with nothing under them
+    res = []
+    for i, (k, t) in enumerate(out):
+        isH = bool(hdr_kind(t)) and len(t) < 200
+        nxt = out[i+1] if i + 1 < len(out) else None
+        if isH and (nxt is None or (nxt[0] != k and False)): continue
+        res.append([k, t])
+    ded = []
+    for r in res:
+        if not ded or ded[-1] != r: ded.append(r)
+    return ded
+SLICES = {  # (heading, start regex, start occurrence, end regex or None, end occurrence) on the page's lines; heading is ours, not FWC's
+ "pompano": [("Florida pompano", r'^Minimum Size Limit: 11"', 0, r"^Pompano Endorsement Zone", 0)],
+ "permit-pompano": [("African pompano", r'^Minimum Size Limit: 24"', 0, r"^Special Permit Zone", 0), ("Permit (outside the Special Permit Zone, which is south of 25\u00b009'N, well south of this page's area)", r'^Slot Limit: Not less than 11"', 0, None, 0)],
+ "greater-amberjack": [(None, r"^Gulf$", 0, r"^Atlantic$", 0), (None, r"^Legal Gear", 0, r"^Have you signed", 0)],
+ "lesser-amberjack": [(None, r"^State waters regulations", 0, r"^Have you signed", 0)],
+ "tilefish": [("Golden tilefish", r"^Gulf State$", 0, r"^Gulf State$", 1), ("Blueline tilefish", r"^Gulf State$", 1, r"^Gear Requirements$", 0), (None, r"^Gear Requirements$", 0, r"^Description$", 0)],
+ "sand-seatrout": [(None, r"^State Waters Outside Weakfish Management Zone$", 0, r"^Weakfish Management Zone$", 1)],
+ "lionfish": [(None, r"^Minimum Size Limit: None", 0, r"^Habitat and Fishing Tips", 0)],
+ "tarpon": [(None, r"^Regulations$", 0, r"^Tarpon Best Fishing Practices$", 0)],
+ "sharks": [(None, r"^Harvestable Sharks$", 0, r"^Help released sharks survive", 0), (None, r"^Prohibited species: Know before you go", 0, r"^Negative Shark Encounters", 0), (None, r"^Sawfish$", 0, r"^Is that shark tagged", 0)],
+ "gear-rules": [(None, r"^State and federal regulations require", 0, r"^Gulf of America$", 0), (None, r"^State Waters$", 0, r"^State Waters$", 1), ("What the terms mean", r"^Circle hooks are made", 0, None, 0)],
+ "bonefish": [(None, r"^Bonefish is a Catch", 0, r"^June 2013", 0)],
+ "goliath": [(None, r"^Harvest is prohibited without a permit", 0, r"^Catch and Release$", 0), (None, r"^If you capture a goliath", 0, r"^Can I feed", 0)],
+}
+def apply_slices(eid, lines):
+    spec = SLICES.get(eid)
+    if not spec: return lines
+    def find(rx, nth, frm=0):
+        n = 0
+        for i in range(frm, len(lines)):
+            if re.search(rx, lines[i]):
+                if n == nth: return i
+                n += 1
+        return None
+    out = []
+    for head, a, an, b, bn in spec:
+        i = find(a, an)
+        if i is None: continue
+        j = find(b, bn) if b else len(lines)
+        if j is None or j <= i: j = len(lines)
+        if head: out.append("##" + head)
+        out += lines[i:j]
+    return out
+def build_texts(E, root):
+    texts, pages = {}, {}
+    def page(slug):
+        if slug not in pages:
+            p = root/"data"/"raw"/"species"/(slug + ".txt")
+            pages[slug] = raw_lines(p.read_text(encoding="utf8")) if p.exists() else None
+        return pages[slug]
+    for e in E + [dict(id="gear-rules", slug="gear-rules", name="gear")]:
+        L = page(e["slug"])
+        if L is None: continue
+        groups, rest = clean_banner(L)
+        rest = apply_slices(e["id"], rest)
+        kws = KW.get(e["id"], [e["name"].split()[0].lower()])
+        banner = []
+        for g in groups:
+            txt = " ".join(g).lower()
+            if any(k in txt for k in kws) and not (re.search(r"atlantic", txt) and "gulf" not in txt): banner += g
+        if e["id"] == "barracuda":
+            k = rest.index("Rest of state")
+            keepre = lambda xs: [x for x in select(parse(merge_labels(xs[1:])), e["id"], kws, e["slug"]) if not x[1].startswith("Includes all waters off") and x[1] not in ("Collier through Martin counties", "Rest of state")]
+            texts[e["id"]] = {"by": "collier", "regions": {"Collier through Martin counties": keepre(rest[:k]), "Rest of state": keepre(rest[k:])}, "common": []}
+        elif any(REGION.match(l) for l in rest):
+            pre, regs, post, cur = [], {}, [], None
+            for l in rest:
+                m = REGION.match(l)
+                if m: cur = m.group(1); regs[cur] = []; continue
+                if l == "Other Regulations": cur = None; post.append(l); continue
+                if post: post.append(l)
+                elif cur: regs[cur].append(l)
+                else: pre.append(l)
+            R = {}
+            for name in KEEP_REGIONS:
+                keep = [x for x in regs.get(name, []) if REGION_KEEP.match(x) and not NOISE.search(x) and not re.search(r"biscayne", x, re.I)]
+                R[name] = [["s", x] for x in merge_labels(keep)]
+            common = [["f", x] for x in pre if x.startswith("*")] + [x for x in select(parse(post), e["id"], kws, e["slug"])]
+            texts[e["id"]] = {"regions": R, "common": common}
+        else:
+            texts[e["id"]] = {"lines": [["s", b] for b in banner if not NOISE.search(b)] + select(parse(rest), e["id"], kws, e["slug"])}
+    return texts
+texts = build_texts(E, root)
 fetched = ""
 try: fetched = json.loads((root/"data"/"status.json").read_text())["run_utc"][:10]
 except Exception: pass
