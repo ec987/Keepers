@@ -1,0 +1,296 @@
+{
+ "snook": {
+  "title": "Common snook",
+  "label": "Common snook",
+  "sci": "Centropomus undecimalis",
+  "pick": "File:Centropomus undecimalis Mexico.jpg"
+ },
+ "red-drum": {
+  "title": "Red drum",
+  "label": "Red drum",
+  "sci": "Sciaenops ocellatus",
+  "pick": "File:BullRedTCDMo2May2011.jpg"
+ },
+ "seatrout": {
+  "title": "Spotted seatrout",
+  "label": "Spotted seatrout",
+  "sci": "Cynoscion nebulosus",
+  "pick": "File:Gefleckte Seeforelle.jpg"
+ },
+ "black-drum": {
+  "title": "Black drum",
+  "label": "Black drum",
+  "sci": "Pogonias cromis",
+  "pick": "File:Pogonias Cromis 2010-05-28.jpg"
+ },
+ "sheepshead": {
+  "title": "Archosargus probatocephalus",
+  "label": "Sheepshead",
+  "sci": "Archosargus probatocephalus",
+  "pick": "File:Archosargus probatocephalus (S0966) (12599982853).jpg"
+ },
+ "flounder": {
+  "title": "Paralichthys lethostigma",
+  "label": "Southern flounder (one of four species covered)",
+  "sci": "Paralichthys lethostigma",
+  "pick": "File:Paralichthys lethostigma.jpg"
+ },
+ "pompano": {
+  "title": "Trachinotus carolinus",
+  "label": "Florida pompano",
+  "sci": "Trachinotus carolinus",
+  "pick": "File:Trachinotus carolinus (S0970) (12591792133).jpg"
+ },
+ "mullet": {
+  "title": "Mugil cephalus",
+  "label": "Striped mullet",
+  "sci": "Mugil cephalus",
+  "pick": "File:Mugil cephalus Minorca.jpg"
+ },
+ "tripletail": {
+  "title": "Lobotes surinamensis",
+  "label": "Tripletail",
+  "sci": "Lobotes surinamensis",
+  "pick": "File:Lobotes surinamensis1.jpg"
+ },
+ "bluefish": {
+  "title": "Pomatomus saltatrix",
+  "label": "Bluefish",
+  "sci": "Pomatomus saltatrix",
+  "pick": "File:Pezzo Grosso - panoramio.jpg"
+ },
+ "spanish-mackerel": {
+  "title": "Scomberomorus maculatus",
+  "label": "Spanish mackerel",
+  "sci": "Scomberomorus maculatus",
+  "pick": "File:Scomberomorus maculatus 1.jpg"
+ },
+ "king-mackerel": {
+  "title": "Scomberomorus cavalla",
+  "label": "King mackerel",
+  "sci": "Scomberomorus cavalla",
+  "pick": "File:King Mackerel.JPG"
+ },
+ "cobia": {
+  "title": "Rachycentron canadum",
+  "label": "Cobia",
+  "sci": "Rachycentron canadum",
+  "pick": "File:Rachycentron canadum 502110084.jpg"
+ },
+ "barracuda": {
+  "title": "Sphyraena barracuda",
+  "label": "Great barracuda",
+  "sci": "Sphyraena barracuda",
+  "pick": "File:Sphyraena barracuda 421130658.jpg"
+ },
+ "spot-croaker": {
+  "title": "Leiostomus xanthurus",
+  "label": "Spot (example)",
+  "sci": "Leiostomus xanthurus",
+  "pick": "File:Spot ( Leiostomus xanthurus ).jpg"
+ },
+ "sand-seatrout": {
+  "title": "Cynoscion arenarius",
+  "label": "Sand seatrout",
+  "sci": "Cynoscion arenarius",
+  "pick": "File:Cynoscion arenarius.jpg"
+ },
+ "dolphinfish": {
+  "title": "Coryphaena hippurus",
+  "label": "Dolphinfish (mahi-mahi)",
+  "sci": "Coryphaena hippurus",
+  "pick": "File:Dolphinfish (Coryphaena hippurus).jpg"
+ },
+ "wahoo": {
+  "title": "Acanthocybium solandri",
+  "label": "Wahoo",
+  "sci": "Acanthocybium solandri",
+  "pick": "File:Obs wahoo3.jpg"
+ },
+ "gag": {
+  "title": "Mycteroperca microlepis",
+  "label": "Gag grouper",
+  "sci": "Mycteroperca microlepis",
+  "pick": "File:Fish4335 - Flickr - NOAA Photo Library.jpg"
+ },
+ "black-grouper": {
+  "title": "Mycteroperca bonaci",
+  "label": "Black grouper",
+  "sci": "Mycteroperca bonaci",
+  "pick": "File:Black Grouper (Mycteroperca bonaci) (36552107911).jpg"
+ },
+ "red-grouper": {
+  "title": "Epinephelus morio",
+  "label": "Red grouper",
+  "sci": "Epinephelus morio",
+  "pick": "File:Epinephelus morio1.jpg"
+ },
+ "scamp": {
+  "title": "Mycteroperca phenax",
+  "label": "Scamp (example)",
+  "sci": "Mycteroperca phenax",
+  "pick": "File:Juvenile scamp ( Mycteroperca phenax ) NOAA.jpg"
+ },
+ "grouper-other": {
+  "title": "Hyporthodus niveatus",
+  "label": "Snowy grouper (example)",
+  "sci": "Hyporthodus niveatus",
+  "pick": "File:Epinephelus niveatus NOAA.jpg"
+ },
+ "hogfish": {
+  "title": "Lachnolaimus maximus",
+  "label": "Hogfish",
+  "sci": "Lachnolaimus maximus",
+  "pick": "File:Lachnolaimus maximus 170363478.jpg"
+ },
+ "triggerfish": {
+  "title": "Balistes capriscus",
+  "label": "Gray triggerfish",
+  "sci": "Balistes capriscus",
+  "pick": "File:Grey Trigger fish.jpg"
+ },
+ "greater-amberjack": {
+  "title": "Seriola dumerili",
+  "label": "Greater amberjack",
+  "sci": "Seriola dumerili",
+  "pick": "File:Fish4446 - Flickr - NOAA Photo Library.jpg"
+ },
+ "lesser-amberjack": {
+  "title": "Seriola fasciata",
+  "label": "Lesser amberjack",
+  "sci": "Seriola fasciata",
+  "pick": "File:Seriola fasciata.png"
+ },
+ "black-sea-bass": {
+  "title": "Centropristis striata",
+  "label": "Black sea bass",
+  "sci": "Centropristis striata",
+  "pick": "File:Centropristis striata.jpg"
+ },
+ "red-porgy": {
+  "title": "Pagrus pagrus",
+  "label": "Red porgy",
+  "sci": "Pagrus pagrus",
+  "pick": "File:Pagrus pagrus.jpg"
+ },
+ "tilefish": {
+  "title": "Lopholatilus chamaeleonticeps",
+  "label": "Golden tilefish (example)",
+  "sci": "Lopholatilus chamaeleonticeps",
+  "pick": "File:Lopholatilus chamaeleonticeps2.jpg"
+ },
+ "red-snapper": {
+  "title": "Lutjanus campechanus",
+  "label": "Red snapper",
+  "sci": "Lutjanus campechanus",
+  "pick": "File:Red Snapper.jpg"
+ },
+ "lane-snapper": {
+  "title": "Lutjanus synagris",
+  "label": "Lane snapper",
+  "sci": "Lutjanus synagris",
+  "pick": "File:Lutjanus synagris.jpg"
+ },
+ "vermilion": {
+  "title": "Rhomboplites aurorubens",
+  "label": "Vermilion snapper",
+  "sci": "Rhomboplites aurorubens",
+  "pick": "File:Rhomboplites aurorubens - pone.0010676.g087.png"
+ },
+ "gray-snapper": {
+  "title": "Lutjanus griseus",
+  "label": "Gray (mangrove) snapper",
+  "sci": "Lutjanus griseus",
+  "pick": "File:Lutjanus griseus (S0624) (12596775395).jpg"
+ },
+ "mutton-snapper": {
+  "title": "Lutjanus analis",
+  "label": "Mutton snapper",
+  "sci": "Lutjanus analis",
+  "pick": "File:Lutjanus analis.jpg"
+ },
+ "cubera-snapper": {
+  "title": "Lutjanus cyanopterus",
+  "label": "Cubera snapper",
+  "sci": "Lutjanus cyanopterus",
+  "pick": "File:Lutjanus cyanopterus SI2.jpg"
+ },
+ "other-snappers": {
+  "title": "Ocyurus chrysurus",
+  "label": "Yellowtail snapper (example)",
+  "sci": "Ocyurus chrysurus",
+  "pick": "File:Ocyurus chrysurus Florida Keys.jpg"
+ },
+ "stone-crab": {
+  "title": "Menippe mercenaria",
+  "label": "Florida stone crab",
+  "sci": "Menippe mercenaria",
+  "pick": "File:Juvenile Stone Crab ( Menippe mercenaria ) - Flickr - Andrea Westmoreland.jpg"
+ },
+ "blue-crab": {
+  "title": "Callinectes sapidus",
+  "label": "Blue crab",
+  "sci": "Callinectes sapidus",
+  "pick": "File:Blaukrabbe Callinectes sapidus 2.jpg"
+ },
+ "lobster": {
+  "title": "Panulirus argus",
+  "label": "Caribbean spiny lobster",
+  "sci": "Panulirus argus",
+  "pick": "File:Panulirus argus NOAA.jpg"
+ },
+ "shrimp": {
+  "title": "Litopenaeus setiferus",
+  "label": "White shrimp (example)",
+  "sci": "Litopenaeus setiferus",
+  "pick": "File:Litopenaeus setiferus (I0142) (13048551453).jpg"
+ },
+ "permit-pompano": {
+  "title": "Trachinotus falcatus",
+  "label": "Permit",
+  "sci": "Trachinotus falcatus",
+  "pick": "File:Fish4502 - Flickr - NOAA Photo Library.jpg"
+ },
+ "lionfish": {
+  "title": "Pterois volitans",
+  "label": "Red lionfish",
+  "sci": "Pterois volitans",
+  "pick": "File:Pazifischer Rotfeuerfisch - Red lionfish - Pterois volitans.jpg"
+ },
+ "unregulated": {
+  "title": "Caranx hippos",
+  "label": "Crevalle jack (example)",
+  "sci": "Caranx hippos",
+  "pick": "File:Jack crevalle - Oleta River State Park.jpg"
+ },
+ "tarpon": {
+  "title": "Megalops atlanticus",
+  "label": "Atlantic tarpon",
+  "sci": "Megalops atlanticus",
+  "pick": "File:Megalops atlanticus.jpg"
+ },
+ "bonefish": {
+  "title": "Albula vulpes",
+  "label": "Bonefish",
+  "sci": "Albula vulpes",
+  "pick": "File:Albula vulpes form.jpg"
+ },
+ "goliath": {
+  "title": "Epinephelus itajara",
+  "label": "Goliath grouper",
+  "sci": "Epinephelus itajara",
+  "pick": "File:140806 HausDesMeeres 141 (14659739279).jpg"
+ },
+ "nassau": {
+  "title": "Epinephelus striatus",
+  "label": "Nassau grouper",
+  "sci": "Epinephelus striatus",
+  "pick": "File:Nassau grouper (13002589674).jpg"
+ },
+ "oysters": {
+  "title": "Crassostrea virginica",
+  "label": "Eastern oyster",
+  "sci": "Crassostrea virginica",
+  "pick": "File:Eastern Oyster (Crassostrea virginica) Top (16116198647).jpg"
+ }
+}
