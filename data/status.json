@@ -1,40 +1,40 @@
 {
- "run_utc": "2026-10-28T17:11:43.572751Z",
+ "run_utc": "2026-10-29T17:26:54.481017Z",
  "sources": {
   "fwc-snook": {
    "ok": true,
-   "bytes": 195213,
-   "sha256": "7394ab5f48a9232f"
+   "bytes": 195389,
+   "sha256": "ececa0d26c990b08"
   },
   "fwc-groupers": {
    "ok": true,
-   "bytes": 247790,
-   "sha256": "6f25b9bb9b456e61"
+   "bytes": 247966,
+   "sha256": "c5b65f99217d2d19"
   },
   "fwc-snappers": {
    "ok": true,
-   "bytes": 225643,
-   "sha256": "3264bf2132be4844"
+   "bytes": 225819,
+   "sha256": "24afc368bf1ed1ac"
   },
   "fwc-shellfish": {
    "ok": true,
-   "bytes": 219893,
-   "sha256": "c53c6136f5565e58"
+   "bytes": 220069,
+   "sha256": "45cbd148b9f46947"
   },
   "fwc-sea-shells": {
    "ok": true,
-   "bytes": 162454,
-   "sha256": "f7e10aca8bf63a46"
+   "bytes": 162630,
+   "sha256": "f5de32a9eb5bb0f2"
   },
   "fwc-unregulated": {
    "ok": true,
-   "bytes": 166032,
-   "sha256": "025da637674889fb"
+   "bytes": 166208,
+   "sha256": "b4e982712b22517b"
   },
   "fwc-index": {
    "ok": true,
-   "bytes": 199805,
-   "sha256": "e2cf569561ebac8a"
+   "bytes": 199981,
+   "sha256": "91fa709675bba2eb"
   },
   "gulfcouncil-layer-list": {
    "ok": true,
