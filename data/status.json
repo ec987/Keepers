@@ -1,33 +1,40 @@
 {
- "run_utc": "2026-10-30T17:02:03.629752Z",
+ "run_utc": "2026-10-31T16:08:28.702404Z",
  "sources": {
   "fwc-snook": {
-   "ok": false,
-   "problem": "HTTP Error 403: Forbidden"
+   "ok": true,
+   "bytes": 195389,
+   "sha256": "71247e8f58d8388d"
   },
   "fwc-groupers": {
-   "ok": false,
-   "problem": "HTTP Error 403: Forbidden"
+   "ok": true,
+   "bytes": 247966,
+   "sha256": "42a07d6fd6457596"
   },
   "fwc-snappers": {
-   "ok": false,
-   "problem": "HTTP Error 403: Forbidden"
+   "ok": true,
+   "bytes": 225819,
+   "sha256": "bb5f7af560cc596a"
   },
   "fwc-shellfish": {
-   "ok": false,
-   "problem": "HTTP Error 403: Forbidden"
+   "ok": true,
+   "bytes": 220069,
+   "sha256": "83fd7eb718d878c7"
   },
   "fwc-sea-shells": {
-   "ok": false,
-   "problem": "HTTP Error 403: Forbidden"
+   "ok": true,
+   "bytes": 162630,
+   "sha256": "603f4f790d36af03"
   },
   "fwc-unregulated": {
-   "ok": false,
-   "problem": "HTTP Error 403: Forbidden"
+   "ok": true,
+   "bytes": 166208,
+   "sha256": "3e3d65c89f3f29da"
   },
   "fwc-index": {
-   "ok": false,
-   "problem": "HTTP Error 403: Forbidden"
+   "ok": true,
+   "bytes": 199981,
+   "sha256": "82584f4b51cb88a4"
   },
   "gulfcouncil-layer-list": {
    "ok": true,
